@@ -13,6 +13,6 @@ FaithMind is an iOS app built with Swift that provides users with random Bible v
 ## 📌 Installation  
 1. **Clone this repository:**  
    ```sh
-   git clone https://github.com/yourusername/FaithMind.git
+   git clone https://github.com/giventusmvh/FaithMind.git
 2. **Open the project in Xcode.**
 3. **Run on a simulator or physical device.** 
