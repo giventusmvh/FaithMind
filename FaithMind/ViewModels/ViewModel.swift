@@ -15,11 +15,12 @@ class ViewModel {
     private(set) var status: fetchStatus = .notStarted
     
     var bibleVerse: BibleVerse = BibleVerse.defaultVerse()
+   
     
-    func getData() async {
+    func getData(isDaily: Bool) async {
         status = .fetching
         do {
-            bibleVerse = try await NetworkManager.shared.getVerse()
+            bibleVerse = try await NetworkManager.shared.getVerse(isDaily: isDaily)
             status = .success
         } catch {
             print("Error: \(error)")

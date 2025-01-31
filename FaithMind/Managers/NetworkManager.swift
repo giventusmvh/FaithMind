@@ -13,9 +13,11 @@ class NetworkManager {
     private let baseURL = "https://bible-api.com/"
     let decoder = JSONDecoder()
     
-    func getVerse() async throws -> BibleVerse {
+    func getVerse(isDaily: Bool) async throws -> BibleVerse {
         
-        let endpoint = baseURL + "Matthew 5:39?translation=kjv"
+        let randEndpoint = isDaily ? getRandomDaily() : getRandom()
+        
+        let endpoint = baseURL + "\(randEndpoint)?translation=kjv"
         
         guard let url = URL(string: endpoint) else {
             throw NetworkError.invalidURL
@@ -36,11 +38,29 @@ class NetworkManager {
     }
     
     func getRandomDaily() -> String {
-        return ""
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.year, .month, .day], from: Date())
+        let seed = components.year! + components.month! + components.day!
+        srand48(seed)
+        
+        
+        let randomBook = bibleBooksWithChapters.keys.randomElement() ?? "Genesis"
+        let maxChapters = bibleBooksWithChapters[randomBook] ?? 1
+        let randomChapter = Int(drand48() * Double(maxChapters)) + 1
+        let maxVerses = bibleVersesPerChapter[randomBook]?[randomChapter - 1] ?? 1
+        let randomVerse = Int(drand48() * Double(maxVerses)) + 1
+        
+        return "\(randomBook) \(randomChapter):\(randomVerse)"
     }
     
     func getRandom() -> String {
-        return ""
+        let randomBook = bibleBooksWithChapters.keys.randomElement() ?? "Genesis"
+        let maxChapters = bibleBooksWithChapters[randomBook] ?? 1
+        let randomChapter = Int.random(in: 1...maxChapters)
+        let maxVerses = bibleVersesPerChapter[randomBook]?[randomChapter - 1] ?? 1
+        let randomVerse = Int.random(in: 1...maxVerses)
+        
+        return "\(randomBook) \(randomChapter):\(randomVerse)"
     }
     
     

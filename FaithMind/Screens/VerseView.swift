@@ -44,7 +44,7 @@ struct VerseView: View {
 
                     Button {
                         Task{
-                           await vm.getData()
+                            await vm.getData(isDaily: false)
                         }
                     } label: {
                         Text("Refresh Verse")
@@ -67,7 +67,7 @@ struct VerseView: View {
         .ignoresSafeArea()
         .onAppear {
             Task {
-                await vm.getData()
+                await vm.getData(isDaily: true)
             }
         }
     }
